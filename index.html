@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nowoczesny Marketing z AI — Ćwiczenia</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c0f0d;--paper:#f7f5f0;--card:#fff;--orange:#ff7e00;--os:#fff1e2;--green:#144525;--gs:#e9f1ec;--line:#e6e2d8;--text:#1c211e;--muted:#6f766f;--done:#1d7a43}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--text);font-family:'Figtree',system-ui,sans-serif;font-size:16px;line-height:1.65}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+a{color:var(--green)}a:hover{text-decoration:underline}
+
+/* HEADER */
+.top{background:var(--ink);padding:16px 24px}
+.ti{max-width:1020px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tl{height:48px}.tr{text-align:right}
+.tt{font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;text-transform:uppercase;color:#fff;letter-spacing:.5px}
+.ts{font-size:12px;color:#b9beb6;margin-top:2px}.ts b{color:var(--orange)}
+
+/* PROGRESS */
+.ebar{position:sticky;top:0;z-index:40;background:rgba(247,245,240,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:9px 24px}
+.ebi{max-width:1020px;margin:0 auto}
+.ebr{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ebl{font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.ebc{font-size:13px;color:var(--muted);font-weight:600}.ebc b{color:var(--orange);font-size:15px}
+.bar{margin-top:6px;height:11px;border-radius:99px;background:#e9e5da;overflow:hidden}
+.bf{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--orange) 60%,#ffb25e);border-radius:99px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+
+/* GLOSSARY BUTTON */
+.gBtn{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;background:var(--green);color:#fff;border:none;cursor:pointer;border-radius:10px 0 0 10px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:-3px 0 12px rgba(0,0,0,.15);transition:background .15s}
+.gBtn:hover{background:#1a5e32}
+.gBtn svg{width:20px;height:20px;fill:#fff}
+.gBtn span{font-family:'Archivo',sans-serif;font-weight:800;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;writing-mode:vertical-rl}
+
+/* GLOSSARY PANEL */
+.gPanel{position:fixed;right:-380px;top:0;height:100vh;width:360px;background:var(--card);z-index:95;box-shadow:-6px 0 28px rgba(0,0,0,.14);transition:right .3s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;overflow:hidden}
+.gPanel.open{right:0}
+
+/* PANEL TABS */
+.gPanelHead{background:var(--green);flex-shrink:0}
+.gTabRow{display:flex;border-bottom:1px solid rgba(255,255,255,.15)}
+.gTabBtn{flex:1;padding:12px 8px;border:none;background:transparent;color:rgba(255,255,255,.7);font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;border-bottom:3px solid transparent}
+.gTabBtn.on{color:#fff;border-bottom-color:var(--orange)}
+.gClose{position:absolute;top:10px;right:12px;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:0 4px;line-height:1;z-index:1}
+
+/* SLOWNIK CONTENT */
+.gContent{flex:1;overflow-y:auto;display:none}
+.gContent.on{display:block}
+.gBody{padding:12px 16px 20px}
+.gSrchWrap{padding:4px 0 10px;position:sticky;top:0;background:var(--card);z-index:2}
+#gSearch{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 12px 8px 32px;font-family:'Figtree',sans-serif;font-size:14px;background:#f7f5f0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236f766f' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E") no-repeat 10px center;outline:none}
+#gSearch:focus{border-color:var(--orange);background-color:#fff;box-shadow:0 0 0 3px #ff7e0022}
+.gNoRes{padding:16px 0;text-align:center;color:var(--muted);font-size:14px;display:none}
+.gSec{font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.gItem{padding:8px 0;border-bottom:1px solid #f0ece4}
+.gItem:last-child{border-bottom:none}
+.gItem strong{display:block;font-size:13.5px;color:var(--ink)}
+.gItem .gEn{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;display:block;margin-top:1px}
+.gItem p{font-size:13px;color:#3c443e;margin-top:3px}
+
+/* SZYBKI TEST */
+.qBody{padding:12px 16px 24px}
+.qScore{display:none;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;text-align:center;padding:10px 14px;border-radius:10px;background:var(--gs);color:var(--green);margin-bottom:12px}
+.qScore.show{display:block}
+.qReset{display:block;width:100%;margin-bottom:12px;padding:8px;border:2px solid var(--green);border-radius:8px;background:transparent;color:var(--green);font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.qReset:hover{background:var(--gs)}
+.qItem{padding:10px 0;border-bottom:1px solid #f0ece4}
+.qItem:last-child{border-bottom:none}
+.qNum{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.qText{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4}
+.qOpts{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.qOpt{padding:7px 9px;border:1px solid var(--line);border-radius:7px;cursor:pointer;font-size:12px;color:var(--text);transition:all .15s;text-align:left;background:#fcfbf7;line-height:1.3}
+.qOpt:hover{border-color:var(--orange);background:var(--os)}
+.qOpt.correct{background:#e9f1ec!important;border-color:var(--done)!important;color:var(--done)!important;font-weight:700;cursor:default}
+.qOpt.wrong{background:#fde8e8!important;border-color:#b3361c!important;color:#b3361c!important;cursor:default}
+.qOpt.disabled{cursor:default;opacity:.7}
+
+/* LAYOUT */
+.wrap{max-width:1020px;margin:0 auto;padding:26px 24px 70px}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:22px;border-left:5px solid var(--orange)}
+.intro h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(19px,2.8vw,27px);color:var(--ink);line-height:1.2}
+.intro p{margin-top:8px;color:#3c443e;font-size:15px}
+.intro .r{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+.intro .r b{color:var(--green)}
+
+/* GAMMA */
+.gma{margin-bottom:24px}
+.gma summary{cursor:pointer;font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:11px 16px;background:var(--gs);border-radius:10px;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;border:1px solid #c9ddd1}
+.gma summary::-webkit-details-marker{display:none}
+.gma summary::before{content:"▶";font-size:9px;transition:transform .2s;flex-shrink:0}
+.gma[open] summary::before{transform:rotate(90deg)}
+.gma .gif{border-radius:0 0 12px 12px;overflow:hidden;border:1px solid #c9ddd1;border-top:none}
+.gma iframe{width:100%;height:520px;border:none;display:block}
+
+/* TABS */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tab{flex:1;min-width:150px;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:'Figtree',sans-serif;transition:border-color .15s}
+.tab:hover{border-color:#c9c4b6}
+.tab .tn{font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.tab .tk{font-weight:700;font-size:14px;color:var(--ink);margin-top:2px}
+.tab .th{font-size:11.5px;color:var(--muted);margin-top:1px}
+.tab.on{border:2px solid var(--orange);background:var(--os)}.tab.on .tn{color:var(--orange)}
+.panel{display:none}.panel.on{display:block}
+
+/* INSPIRE */
+.inspire{background:var(--ink);border-radius:12px;padding:16px 20px;margin:14px 0;color:#fff}
+.inspire h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:var(--orange);margin-bottom:10px;letter-spacing:.5px}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.igrid{grid-template-columns:1fr}}
+.icard{background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px}
+.icard strong{display:block;font-size:13px;color:#fff;margin-bottom:4px}
+.icard p{font-size:12.5px;color:#b9beb6;line-height:1.5}
+.icard a{color:var(--orange);font-size:12px;display:block;margin-top:6px;text-decoration:none}
+.icard a:hover{text-decoration:underline}
+
+/* EXERCISE CARD */
+.cw{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:border-color .25s}
+.cw.done{border-color:var(--done)}
+.cwh{padding:16px 20px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.cwm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.cwn{color:var(--orange)}.cwmod{background:var(--green);color:#fff;padding:2px 8px;border-radius:4px}
+.cwt{color:var(--muted)}
+.cwbadge{display:none;font-family:'Archivo',sans-serif;font-weight:800;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:var(--done);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.cw.done .cwbadge{display:inline-block}
+.cwtitle{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(17px,2.2vw,22px);color:var(--ink);line-height:1.2;padding:2px 20px 0}
+.cwgoal{margin:9px 20px 0;padding:9px 13px;border-radius:8px;background:var(--gs);color:#143b22;font-size:14px}
+.cwgoal b{font-weight:700}
+.cwbody{padding:14px 20px 20px}
+
+/* STEPS */
+.sec{font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.step{display:flex;gap:11px;align-items:flex-start;padding:7px 9px;border-radius:8px;cursor:pointer;transition:background .15s}
+.step:hover{background:#faf8f3}
+.step input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:21px;height:21px;margin-top:2px;cursor:pointer;border:2px solid #b9b3a3;border-radius:6px;background:#fff;display:grid;place-content:center;transition:all .15s}
+.step input::before{content:"";width:11px;height:11px;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%);background:#fff;transform:scale(0);transition:transform .15s}
+.step input:checked{background:var(--orange);border-color:var(--orange)}
+.step input:checked::before{transform:scale(1)}
+.step span{font-size:15px}
+.step input:checked+span{color:var(--muted);text-decoration:line-through;text-decoration-color:#c9c4b6}
+
+/* PROMPT */
+.prom{margin:11px 0;border-radius:10px;overflow:hidden;border:1px solid #23282488}
+.pbar{background:#171b18;color:#9aa39a;display:flex;justify-content:space-between;align-items:center;padding:7px 13px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Archivo',sans-serif;font-weight:700}
+.pcopy{font-family:'Figtree',sans-serif;font-weight:700;font-size:12px;background:var(--orange);color:#1a1206;border:none;border-radius:5px;padding:4px 12px;cursor:pointer;transition:all .15s}
+.pcopy:hover{background:#ff9226}.pcopy.cp{background:var(--done);color:#fff}
+.prom pre{background:var(--ink);color:#e8ece7;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;padding:13px 15px;white-space:pre-wrap;word-break:break-word}
+.prom pre b{color:#ffb25e;font-weight:500}
+
+/* NOTES */
+.notes textarea{width:100%;min-height:90px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:#fcfbf7;padding:11px 13px;font-family:'Figtree',sans-serif;font-size:14.5px;color:var(--text)}
+.notes textarea:focus{border-color:var(--orange);outline:none;box-shadow:0 0 0 3px #ff7e0022}
+.nh{font-size:12px;color:var(--muted);margin-top:4px}
+.sv{color:var(--done);font-weight:600;opacity:0;transition:opacity .3s}.sv.s{opacity:1}
+
+.hint{font-size:13.5px;color:var(--muted);background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:9px 13px;margin:8px 0}
+.hint b{color:var(--green)}
+
+/* TOOLS */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:8px;margin:10px 0}
+.tool{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fcfbf7;text-decoration:none;display:block;transition:border-color .15s}
+.tool:hover{border-color:var(--orange)}
+.tool b{display:block;font-size:14px;color:var(--ink)}
+.tool .tu{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);margin:2px 0 3px;display:block}
+.tool p{font-size:12.5px;color:var(--muted)}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{font-family:'Figtree',sans-serif;font-weight:700;font-size:14px;border:none;border-radius:10px;padding:11px 19px;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--ink);color:#fff}.bp:hover{background:#252b27}
+.bg{background:transparent;border:2px solid var(--ink);color:var(--ink)}.bg:hover{background:#0c0f0d0d}
+
+footer{background:var(--ink);color:#9aa39a;margin-top:30px;padding:20px 24px;font-size:13px}
+.fi{max-width:1020px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.fi b{color:#fff}.fi .o{color:var(--orange)}
+
+@media(max-width:640px){
+  .ti{justify-content:center;text-align:center}.tr{text-align:center}
+  .tabs{flex-direction:column}
+  .cwh{flex-direction:column}
+  .cwtitle,.cwgoal,.cwbody,.cwh{padding-left:14px;padding-right:14px}
+  .gPanel{width:100%}
+  .qOpts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- GLOSSARY BUTTON -->
+<button class="gBtn" id="gBtn" aria-label="Słownik i Test">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+<span>Słownik</span>
+</button>
+
+<!-- GLOSSARY PANEL -->
+<div class="gPanel" id="gPanel">
+<div class="gPanelHead" style="position:relative">
+  <div class="gTabRow">
+    <button class="gTabBtn on" data-gtab="slownik">📖 Słownik</button>
+    <button class="gTabBtn" data-gtab="test">⚡ Szybki Test</button>
+  </div>
+  <button class="gClose" id="gClose">×</button>
+</div>
+
+<!-- SLOWNIK -->
+<div class="gContent on" id="gc-slownik">
+<div class="gBody">
+<div class="gSrchWrap">
+  <input type="search" id="gSearch" placeholder="Szukaj… np. ROAS, CTR, UVP" autocomplete="off">
+</div>
+<div class="gNoRes" id="gNoRes">Brak wyników dla „<span id="gQ"></span>"</div>
+
+<div class="gSec">Analityka (Moduł 10)</div>
+<div class="gItem"><strong>CTR</strong><span class="gEn">Click-Through Rate = Współczynnik klikalności</span><p>% osób, które kliknęły reklamę. Dobry CTR: Meta &gt;1%, Google Search &gt;2–3%.</p></div>
+<div class="gItem"><strong>CPC</strong><span class="gEn">Cost Per Click = Koszt kliknięcia</span><p>Ile płacisz za jedno kliknięcie. Niski CPC nie zawsze oznacza dobrą kampanię.</p></div>
+<div class="gItem"><strong>CPM</strong><span class="gEn">Cost Per Mille = Koszt tysiąca wyświetleń</span><p>Koszt dotarcia do 1000 osób. Wskaźnik zasięgu, nie jakości.</p></div>
+<div class="gItem"><strong>CPL</strong><span class="gEn">Cost Per Lead = Koszt leada</span><p>Ile kosztuje pozyskanie jednego kontaktu. Porównuj ze swoją marżą.</p></div>
+<div class="gItem"><strong>CR</strong><span class="gEn">Conversion Rate = Wskaźnik konwersji</span><p>% osób które wykonały akcję (zakup, zapis). Typowo 1–5% dla stron.</p></div>
+<div class="gItem"><strong>ROAS</strong><span class="gEn">Return on Ad Spend = Zwrot z reklamy</span><p>Przychód ÷ wydatki. ROAS 4 = 4 zł z każdej 1 zł. Król wskaźników.</p></div>
+
+<div class="gSec">Reklama płatna (Moduły 5–6)</div>
+<div class="gItem"><strong>Meta Ads</strong><span class="gEn">Facebook / Instagram Ads</span><p>System reklam Meta — trafia do osób które jeszcze nie szukały, ale pasują do grupy docelowej. Trzy poziomy: Kampania → Zestaw reklam → Reklama.</p></div>
+<div class="gItem"><strong>Google Ads</strong><span class="gEn">Reklama w wyszukiwarce Google</span><p>Trafia do osób które aktywnie szukają Twojego produktu. Płacisz tylko za kliknięcie (CPC).</p></div>
+<div class="gItem"><strong>Targetowanie</strong><span class="gEn">Targeting = celowanie</span><p>Definiowanie grupy odbiorców reklamy: wiek, lokalizacja, zainteresowania, zachowania.</p></div>
+<div class="gItem"><strong>Lookalike Audience</strong><span class="gEn">Podobna grupa odbiorców</span><p>Meta tworzy grupę osób podobnych do Twoich klientów. Jeden z najskuteczniejszych typów targetowania.</p></div>
+<div class="gItem"><strong>Remarketing</strong><span class="gEn">Retargeting = ponowne dotarcie</span><p>Reklamy do osób które już były na Twojej stronie lub wchodziły z Tobą w kontakt. Najcieplejszy ruch.</p></div>
+<div class="gItem"><strong>Piksel (Meta Pixel)</strong><span class="gEn">Fragment kodu śledzącego</span><p>Kod wklejony na stronę — śledzi kto ją odwiedził, co zrobił, ile czasu spędził. Podstawa remarketingu.</p></div>
+<div class="gItem"><strong>Kreacja reklamowa</strong><span class="gEn">Ad creative</span><p>Obraz, wideo lub karuzela w reklamie — to co widzi odbiorca. Kreacja decyduje o CTR bardziej niż tekst.</p></div>
+<div class="gItem"><strong>RSA</strong><span class="gEn">Responsive Search Ad</span><p>Reklama tekstowa Google: 10 nagłówków (≤30 znaków) + 4 opisy (≤90 znaków). Google testuje kombinacje automatycznie.</p></div>
+<div class="gItem"><strong>Słowo kluczowe</strong><span class="gEn">Keyword</span><p>Fraza wpisywana przez użytkownika w Google, która uruchamia Twoją reklamę.</p></div>
+<div class="gItem"><strong>Long tail</strong><span class="gEn">Długi ogon</span><p>Długa, precyzyjna fraza (np. „pergola lamelowa aluminiowa Warszawa"). Mniejszy zasięg ale wyższa konwersja i niższy CPC.</p></div>
+
+<div class="gSec">Landing page i strony (Moduł 7)</div>
+<div class="gItem"><strong>Landing page</strong><span class="gEn">Strona lądowania</span><p>Prosta jednostronicowa strona z JEDNYM celem i JEDNYM CTA. Brak menu, brak linków zewnętrznych. Zamienia ruch w leady.</p></div>
+<div class="gItem"><strong>Lovable</strong><span class="gEn">AI App Builder</span><p>Narzędzie które buduje stronę z jednego opisu tekstowego. Wynik: działający kod React + deploy online w 2 minuty.</p></div>
+<div class="gItem"><strong>Claude Code</strong><span class="gEn">AI do edycji kodu</span><p>Terminal z wbudowanym AI — edytujesz kod rozmawiając po polsku. „Zmień kolor przycisku na zielony" → Claude Code to robi.</p></div>
+<div class="gItem"><strong>GitHub</strong><span class="gEn">Platforma kodu i hostingu</span><p>Darmowy serwer i historia zmian strony. GitHub Pages = darmowy hosting. Lovable synchronizuje się z GitHub automatycznie.</p></div>
+<div class="gItem"><strong>Dowód społeczny</strong><span class="gEn">Social proof</span><p>Opinie klientów, liczby (200 realizacji), certyfikaty, zdjęcia przed/po. Jeden z 7 elementów skutecznego LP.</p></div>
+<div class="gItem"><strong>CTA</strong><span class="gEn">Call to Action = Wezwanie do Działania</span><p>Jeden wyraźny przycisk z konkretnym poleceniem: „Wyślij zapytanie", „Pobierz bezpłatnie", „Zarezerwuj termin".</p></div>
+
+<div class="gSec">Automatyzacja (Moduł 8)</div>
+<div class="gItem"><strong>Automatyzacja</strong><span class="gEn">Marketing Automation</span><p>System który wykonuje powtarzalne zadania bez Twojego udziału — np. wysyła maile po wypełnieniu formularza.</p></div>
+<div class="gItem"><strong>Trigger</strong><span class="gEn">Wyzwalacz</span><p>Zdarzenie które uruchamia automatyzację. Np. „ktoś zapisał się do listy" → trigger → wysyła mail powitalny.</p></div>
+<div class="gItem"><strong>Sekwencja e-mailowa</strong><span class="gEn">Email sequence / drip campaign</span><p>Seria zaplanowanych maili wysyłanych automatycznie w określonych odstępach czasu po triggerze.</p></div>
+<div class="gItem"><strong>Formularz embed</strong><span class="gEn">Osadzony formularz</span><p>Formularz MailerLite wklejony na stronę Lovable przez kod HTML. Wypełnienie = automatyczny zapis do listy = trigger sekwencji.</p></div>
+<div class="gItem"><strong>Open Rate</strong><span class="gEn">Wskaźnik otwarć maila</span><p>% osób które otworzyły Twój email. Dobry wynik: 25–40%. Zależy głównie od tematu maila.</p></div>
+<div class="gItem"><strong>Make.com</strong><span class="gEn">Narzędzie no-code do automatyzacji</span><p>Łączy różne aplikacje bez programowania. Scenariusz: formularz na stronie → dodaj do MailerLite → wyślij powiadomienie SMS.</p></div>
+
+<div class="gSec">Fundamenty AI</div>
+<div class="gItem"><strong>AI</strong><span class="gEn">Artificial Intelligence = Sztuczna Inteligencja</span><p>Systemy komputerowe naśladujące ludzkie myślenie. Claude, ChatGPT, Gemini to przykłady AI.</p></div>
+<div class="gItem"><strong>LLM</strong><span class="gEn">Large Language Model</span><p>Duży Model Językowy — typ AI wytrenowany na miliardach tekstów. Generuje tekst, analizuje, tłumaczy.</p></div>
+<div class="gItem"><strong>PROMPT</strong><span class="gEn">Polecenie dla AI</span><p>Instrukcja tekstowa wpisywana w narzędzie AI. Im dokładniejszy prompt, tym lepszy wynik.</p></div>
+<div class="gItem"><strong>RZKF</strong><span class="gEn">Rola + Zadanie + Kontekst + Format</span><p>Struktura skutecznego promptu. Rola = kim jest AI, Zadanie = co zrobić, Kontekst = Twój biznes, Format = jak ma wyglądać.</p></div>
+
+<div class="gSec">Marka i treści</div>
+<div class="gItem"><strong>UVP</strong><span class="gEn">Unikalna Propozycja Wartości</span><p>Jedno zdanie dlaczego klient wybiera Ciebie. Kim jesteś / Komu pomagasz / Co Cię wyróżnia.</p></div>
+<div class="gItem"><strong>Hook</strong><span class="gEn">Haczyk</span><p>Pierwsze zdanie posta lub pierwsze 3 sek wideo. Decyduje czy odbiorca zostaje czy przewija.</p></div>
+<div class="gItem"><strong>Lead</strong><span class="gEn">Potencjalny klient</span><p>Osoba która zostawiła kontakt. Jeszcze nie kupiła, ale wyraziła zainteresowanie.</p></div>
+<div class="gItem"><strong>Lead Magnet</strong><span class="gEn">Magnes na kontakty</span><p>Darmowa wartość w zamian za e-mail: PDF, checklista, wycena, mini-kurs.</p></div>
+<div class="gItem"><strong>Lejek sprzedażowy</strong><span class="gEn">Sales Funnel</span><p>Droga klienta: Świadomość → Zainteresowanie → Rozważanie → Decyzja.</p></div>
+<div class="gItem"><strong>B2B / B2C</strong><span class="gEn">Business-to-Business / Business-to-Consumer</span><p>B2B = sprzedaż dla firm. B2C = sprzedaż dla klientów indywidualnych. Różne komunikaty, różne kanały.</p></div>
+</div>
+</div>
+
+<!-- SZYBKI TEST -->
+<div class="gContent" id="gc-test">
+<div class="qBody">
+  <div class="qScore" id="qScore"></div>
+  <button class="qReset" id="qReset">🔄 Zacznij test od nowa</button>
+  <div id="quizContainer"></div>
+</div>
+</div>
+</div><!-- /gPanel -->
+
+<header class="top">
+  <div class="ti">
+    <img class="tl" src="data:image/jpeg;base64,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" alt="Energia dla Biznesu">
+    <div class="tr">
+      <div class="tt">Nowoczesny Marketing z AI</div>
+      <div class="ts">Ćwiczenia praktyczne · <b>Landing Page · Reklamy · Automatyzacja</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="ebar">
+  <div class="ebi">
+    <div class="ebr">
+      <span class="ebl">⚡ Postęp</span>
+      <span class="ebc"><b id="pct">0%</b> · <span id="dc">0</span>/<span id="tc">0</span> kroków</span>
+    </div>
+    <div class="bar"><div class="bf" id="bf"></div></div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="intro">
+  <h1>Dziś zamykasz pętlę:<br>strona → reklamy → automatyzacja.</h1>
+  <p>Każde ćwiczenie jest połączone z następnym. Lovable strona → Meta Ads i Google Ads kierują na nią ruch → MailerLite obsługuje leady automatycznie. Pracujesz na swoim biznesie, wynosisz gotowy system.</p>
+  <div class="r"><b>Słownik i Szybki Test</b> — kliknij przycisk 📖 po prawej stronie. Test sprawdza wiedzę z całego szkolenia — użyj go przed testem końcowym.</div>
+</section>
+
+<!-- GAMMA EMBED -->
+<details class="gma" open>
+  <summary>📊 Prezentacja szkoleniowa — otwórz i korzystaj przez cały dzień</summary>
+  <div class="gif">
+    <iframe src="Nowoczesny-Marketing-z-AI.pdf" title="Nowoczesny Marketing z AI — prezentacja"></iframe>
+  </div>
+</details>
+
+<!-- MODULE TABS -->
+<div class="tabs" role="tablist">
+  <button class="tab on" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
+
+<!-- ══════ BLOK 1 — LANDING PAGE ══════ -->
+<div class="panel on" id="p1">
+
+    <div class="icard">
+      <strong>land-book.com — inspiracje LP</strong>
+      <p>Galeria najlepszych landing page'y. Zanim napiszesz prompt — znajdź styl który Ci pasuje.</p>
+      <a href="https://land-book.com" target="_blank">🔗 land-book.com →</a>
+    </div>
+    <div class="icard">
+      <strong>Lovable — AI buduje stronę</strong>
+      <p>Opisujesz po polsku → AI generuje kod React → strona online w 2 minuty. Bez programowania.</p>
+      <a href="https://lovable.dev" target="_blank">🔗 lovable.dev →</a>
+    </div>
+    <div class="icard">
+      <strong>Fightmode.tv — live production case</strong>
+      <p>Prawdziwy serwis zbudowany w Lovable + Claude Code + GitHub. Trener pokaże live jak to działa.</p>
+      <a href="https://fightmode.tv" target="_blank">🔗 fightmode.tv →</a>
+    </div>
+  </div>
+</div>
+
+<article class="cw" data-cw="1A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1A</span><span class="cwmod">Landing Page</span><span class="cwt">~15 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Treści LP z AI — 7 elementów skutecznej strony</h2>
+  <p class="cwgoal"><b>Cel:</b> kompletne treści landing page gotowe do wklejenia w Lovable — H1, podtytuł, problem, rozwiązanie, dowód społeczny, CTA i 3 FAQ.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz Claude → wklej kontekst swojego biznesu (UVP z pierwszego dnia).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj Prompt LP poniżej → wyślij → poczekaj na kompletne treści 7 sekcji.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Przeczytaj H1 na głos — czy w 3 sekundy wiadomo co oferujesz i dla kogo?</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź FAQ — czy odpowiadają na główne obiekcje Twojego klienta? Popraw jeśli nie.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz treści w notatkach poniżej — wklejasz je do Lovable w ćwiczeniu 1B.</span></label>
+    <div class="sec">Prompt — treści Landing Page</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — 7 elementów LP</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś copywriterem specjalizującym się w stronach sprzedażowych.
+Mój biznes: <b>[WKLEJ SWOJE UVP + PRODUKT/USŁUGA + CENA + KTO JEST KLIENTEM]</b>
+
+Napisz kompletne treści landing page — 7 sekcji:
+
+1. NAGŁÓWEK H1 (max 8 słów) — główna obietnica wartości dla klienta
+2. PODTYTUŁ (1–2 zdania) — dla kogo jest oferta i co ją wyróżnia
+3. PROBLEM (3 punkty) — bóle klienta które dobrze znasz
+4. ROZWIĄZANIE (3 punkty) — jak Twój produkt/usługa rozwiązuje każdy ból
+5. DOWÓD SPOŁECZNY — 2 krótkie cytaty klientów + 1 liczba (np. 200 realizacji)
+6. CTA — tekst przycisku (max 5 słów) + krótkie zdanie pod przyciskiem
+7. FAQ — 3 pytania z odpowiedziami (najczęstsze obiekcje klienta)
+
+Ton: ludzki, konkretny, bez korporacyjnych zwrotów. Pisz po polsku.</pre>
+    </div>
+    <div class="sec">Twoje treści LP</div>
+    <div class="notes"><textarea data-notes placeholder="H1: …  Podtytuł: …  Problem: …  Rozwiązanie: …  CTA: …  FAQ: …" style="min-height:130px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="1B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1B</span><span class="cwmod">Lovable</span><span class="cwt">~30 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Strona online — Lovable buduje z Twojego opisu</h2>
+  <p class="cwgoal"><b>Cel:</b> działająca strona Twojego biznesu online — z formularzem kontaktowym, gotowa do połączenia z MailerLite w ćwiczeniu 4.</p>
+  <div class="cwbody">
+    <div class="hint"><b>Przed startem:</b> zarejestruj się na <a href="https://lovable.dev" target="_blank">lovable.dev</a> kontem Google lub GitHub. Plan bezpłatny = 5 wiadomości dziennie — wystarczy na stworzenie strony i 2–3 poprawki.</div>
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na lovable.dev → <b>Start building</b> → opisz stronę w 3 zdaniach: czym jest, dla kogo, jeden cel (np. „zbieranie zapytań o wycenę").</span></label>
+    <label class="step"><input type="checkbox" data-step><span>W kolejnej wiadomości wklej pełne treści z ćwiczenia 1A: „Użyj tych treści na stronie: [wklej]".</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Poczekaj 60–90 sek na wygenerowanie → przejrzyj stronę → poproś o 2 poprawki (np. „zmień kolor przycisków na zielony", „przesuń formularz wyżej").</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź czy strona ma formularz kontaktowy (imię + email) — jeśli nie, poproś: „Dodaj prosty formularz z polami: imię i email, z przyciskiem Wyślij zapytanie".</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj publiczny URL strony (np. xyz.lovable.app) → wklej w notatki poniżej.</span></label>
+    <div class="sec">Prompt startowy do Lovable</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt startowy — Lovable</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Zbuduj profesjonalną landing page dla mojego biznesu.
+
+Mój biznes: <b>[OPISZ W 3 ZDANIACH: CO SPRZEDAJESZ + DLA KOGO + JAKI CEL MA STRONA]</b>
+
+Wymagania:
+- Nowoczesny, minimalistyczny design (jasne tło, jeden kolor akcentowy)
+- Sekcje: hero (nagłówek + CTA), problem, rozwiązanie, dowód społeczny, formularz kontaktowy, FAQ
+- Formularz: pola imię + email + opcjonalnie wiadomość + przycisk CTA
+- Responsywna na telefon
+- Jeden jasny przycisk CTA widoczny bez scrollowania</pre>
+    </div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="URL strony Lovable: …  Co poprawiłam: …  Co wygląda dobrze: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="1C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 1C</span><span class="cwmod">GitHub</span><span class="cwt">~10 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Połącz z GitHub — Twoja strona ma wersjonowanie</h2>
+  <p class="cwgoal"><b>Cel:</b> strona z Lovable zsynchronizowana z GitHub — każda zmiana zapisana, kod dostępny do edycji.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>W Lovable: kliknij ikonę GitHub (prawy górny róg) → <b>Connect to GitHub</b>.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zaloguj się GitHub (lub zarejestruj bezpłatnie na github.com) → zatwierdź uprawnienia dla Lovable.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Lovable automatycznie tworzy repozytorium → sprawdź czy widzisz zielony status „Connected".</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wejdź na github.com → sprawdź nowe repozytorium → skopiuj link i wklej w notatki.</span></label>
+    <div class="hint"><b>Dlaczego GitHub?</b> Każda zmiana strony = commit. Możesz cofnąć do poprzedniej wersji. Claude Code może edytować kod bezpośrednio w repozytorium. GitHub Pages = darmowy hosting.</div>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Link GitHub repo: …  Status połączenia: ✓ / ✗  Pytania: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+</div>
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
+  <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
+
+<!-- ══════ BLOK 2 — META ADS ══════ -->
+<div class="panel" id="p2">
+
+    <div class="icard">
+      <strong>Lookalike Audience w praktyce</strong>
+      <p>Wgraj listę 100 emaili klientów → Meta znajdzie 2 000 000 podobnych osób w Polsce. Najskuteczniejsze targetowanie dla małych firm.</p>
+    </div>
+    <div class="icard">
+      <strong>Kreacja vs tekst — co ważniejsze?</strong>
+      <p>Kreacja (obraz/wideo) zatrzymuje scrollowanie. Tekst przekonuje. Bez dobrej kreacji najlepszy tekst nie zadziała. Używaj wczorajszych grafik.</p>
+    </div>
+    <div class="icard">
+      <strong>Cel kampanii — Leady</strong>
+      <p>Dla małych firm: cel „Leady" z formularzem natywnym (Instant Form) jest lepszy niż odsyłanie na stronę. Osoba nie opuszcza Facebooka — konwersja wyższa.</p>
+    </div>
+  </div>
+</div>
+
+<article class="cw" data-cw="2A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2A</span><span class="cwmod">Meta Ads · AI</span><span class="cwt">~15 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">3 teksty reklamowe z AI — do testowania A/B/C</h2>
+  <p class="cwgoal"><b>Cel:</b> 3 gotowe warianty tekstu reklamowego na różne grupy docelowe — do wklejenia w Ads Manager w ćwiczeniu 2B.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Skopiuj Prompt Meta Ads → uzupełnij danymi biznesu → wyślij do Claude lub ChatGPT.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Przeczytaj 3 warianty — każdy trafia do innej grupy odbiorców (zimnej, lookalike, remarketingu).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wybierz najsilniejszy hook z każdego wariantu — czy zatrzymuje scrollowanie?</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz 3 teksty w notatkach — kopiujesz je do Ads Manager w ćwiczeniu 2B.</span></label>
+    <div class="sec">Prompt — 3 warianty tekstów</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — teksty Meta Ads</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś ekspertem ds. reklam na Facebooku. Mój biznes i UVP:
+<b>[WKLEJ UVP + PRODUKT + CENA + KLIENT]</b>
+
+Napisz 3 warianty tekstu reklamowego (cel kampanii: Leady):
+
+WARIANT 1 — zimna grupa (nie zna mnie):
+Hook (pierwsze zdanie, max 125 znaków, prowokujące lub ze zaskoczeniem)
+Treść (80–150 słów: problem → rozwiązanie → dowód)
+CTA (max 5 słów: Wyślij zapytanie / Pobierz wycenę / Napisz teraz)
+
+WARIANT 2 — lookalike (podobni do moich klientów):
+Bardziej konkretny, z liczbami i efektami.
+
+WARIANT 3 — remarketing (był na mojej stronie):
+Bezpośredni, usuwa ostatnie obiekcje, ograniczenie czasowe lub bonusowe.
+
+Do każdego: sugestia kreacji (jaki obraz/wideo pasuje do tego wariantu).</pre>
+    </div>
+    <div class="sec">Twoje 3 warianty</div>
+    <div class="notes"><textarea data-notes placeholder="Wariant 1 (zimna): hook — …&#10;&#10;Wariant 2 (lookalike): hook — …&#10;&#10;Wariant 3 (remarketing): hook — …" style="min-height:130px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="2B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 2B</span><span class="cwmod">Ads Manager</span><span class="cwt">~35 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Szkic kampanii Meta Ads — cel, 2 grupy, kreacja z wczoraj</h2>
+  <p class="cwgoal"><b>Cel:</b> kompletny szkic kampanii w Meta Ads Manager — bez publikowania, bez wydawania budżetu. Wychodzisz z wiedzą jak uruchomić reklamę kiedy będziesz gotowa.</p>
+  <div class="cwbody">
+    <div class="hint"><b>Ważne:</b> na etapie szkicu nie musisz podawać karty płatniczej. Zapisujemy jako draft — nie wydasz ani złotówki.</div>
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz <a href="https://business.facebook.com/adsmanager" target="_blank">Meta Ads Manager</a> → kliknij <b>Utwórz</b> → cel kampanii: <b>Leady</b>.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Zestaw 1 — Zainteresowania:</b> wiek (Twoja grupa docelowa), lokalizacja (Polska lub region), zainteresowania (min. 3 trafne do Twojej branży).</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Zestaw 2 — Lookalike lub Remarketing:</b> jeśli masz listę emaili → Custom Audience → Lookalike 1%. Jeśli nie — pozostaw na Zainteresowania z węższą grupą.</span></label>
+    <label class="step"><input type="checkbox" data-step><span><b>Kreacja:</b> wgraj grafikę z wczoraj (post 1080×1350 lub story 1080×1920) → wklej wariant 1 tekstu z ćw. 2A.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź podgląd reklamy (jak wygląda na telefonie) → zapisz jako <b>Draft</b> → nie publikuj.</span></label>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Cel kampanii: Leady  Zestaw 1: zainteresowania — …  Zestaw 2: …  Kreacja: …  Czy zapisano draft: tak/nie"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+</div>
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
+  <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
+
+<!-- ══════ BLOK 3 — GOOGLE ADS ══════ -->
+<div class="panel" id="p3">
+
+    <div class="icard">
+      <strong>RSA — jak Google testuje reklamy</strong>
+      <p>Dajesz 10 nagłówków i 4 opisy → Google automatycznie testuje kombinacje → najlepsze zestawy dostają więcej wyświetleń. Twoja reklama optymalizuje się sama.</p>
+    </div>
+    <div class="icard">
+      <strong>Long tail — dlaczego warto</strong>
+      <p>„okna" = drogi CPC, ogólny ruch. „montaż okien aluminiowych Warszawa cena" = tańszy CPC, klient gotowy do zakupu. Zawsze mix ogólnych + long tail.</p>
+    </div>
+    <div class="icard">
+      <strong>Keyword Planner — free tool</strong>
+      <p>Google Keyword Planner w Google Ads — sprawdzasz miesięczny volumen i CPC dla każdej frazy. Bezpłatny, wymaga konta Google Ads (bez karty do przeglądania).</p>
+    </div>
+  </div>
+</div>
+
+<article class="cw" data-cw="3A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 3A</span><span class="cwmod">Google Ads · Słowa</span><span class="cwt">~20 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">20 słów kluczowych z AI + weryfikacja w Keyword Planner</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowa lista 20 słów kluczowych — mix ogólnych, long tail i lokalnych — do wklejenia w kampanię Google Ads.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt słów kluczowych → otrzymasz 30 propozycji z podziałem na kategorie.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz <a href="https://ads.google.com/aw/keywordplanner" target="_blank">Google Keyword Planner</a> → „Odkryj nowe słowa" → wpisz 5 głównych fraz → sprawdź volumen i CPC.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wybierz finalnie 20 słów: 8 ogólnych (wysokie volumen) + 8 long tail (niska konkurencja) + 4 lokalne (miasto / region).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz listę w notatkach — kopiujesz do kampanii w ćwiczeniu 3B.</span></label>
+    <div class="sec">Prompt — słowa kluczowe</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — 30 słów kluczowych</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś specjalistą Google Ads. Mój biznes:
+<b>[OPISZ: CO SPRZEDAJESZ + LOKALIZACJA + KLIENT]</b>
+
+Podaj 30 fraz kluczowych które wpisuje osoba szukająca mojego produktu w Google.
+
+Podziel na 3 kategorie:
+OGÓLNE (10 fraz) — popularne, krótkie frazy (np. „pergola ogrodowa")
+LONG TAIL (12 fraz) — dłuższe, konkretne (np. „pergola lamelowa aluminiowa cena Warszawa")
+LOKALNE (8 fraz) — z nazwą miasta lub regionu
+
+Format: liczba. fraza | intencja zakupowa (wysoka/średnia/niska)
+
+Zacznij od fraz o najwyższej intencji zakupowej.</pre>
+    </div>
+    <div class="sec">Twoje 20 słów kluczowych</div>
+    <div class="notes"><textarea data-notes placeholder="Ogólne (8): …&#10;&#10;Long tail (8): …&#10;&#10;Lokalne (4): …" style="min-height:120px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="3B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 3B</span><span class="cwmod">Google Ads · RSA</span><span class="cwt">~25 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Reklama RSA — 10 nagłówków i 4 opisy z AI</h2>
+  <p class="cwgoal"><b>Cel:</b> gotowa reklama RSA do wklejenia w Google Ads — 10 nagłówków (≤30 znaków) + 4 opisy (≤90 znaków).</p>
+  <div class="cwbody">
+    <div class="hint"><b>Zasada RSA:</b> nagłówki ≤30 znaków (ze spacjami!), opisy ≤90 znaków. Claude/ChatGPT często przekracza limit — zawsze sprawdź liczbę znaków i popraw.</div>
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt RSA → otrzymasz 10 nagłówków i 4 opisy.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź każdy nagłówek: policz znaki (możesz wkleić do wordcounter.net lub poprosić AI: „Policz znaki każdego nagłówka").</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Otwórz Google Ads → Nowa kampania → Search → wklej 20 słów z ćw. 3A → dodaj reklamę RSA.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Wklej nagłówki i opisy → sprawdź wskaźnik jakości reklamy (powinien być „Dobra" lub „Doskonała").</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz kampanię jako szkic → nie uruchamiaj bez budżetu i przemyślanej strategii.</span></label>
+    <div class="sec">Prompt — reklama RSA</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — RSA Google Ads</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś ekspertem Google Ads. Mój biznes:
+<b>[UVP + PRODUKT + GŁÓWNA KORZYŚĆ + CTA]</b>
+Główne słowo kluczowe: <b>[np. „pergola ogrodowa"]</b>
+
+Napisz reklamę RSA:
+
+10 NAGŁÓWKÓW (każdy MAX 30 znaków ze spacjami):
+- Nagłówek 1: zawiera główne słowo kluczowe
+- Nagłówek 2–3: główne korzyści
+- Nagłówek 4–5: z liczbą lub gwarancją
+- Nagłówek 6–7: CTA (np. „Zamów bezpłatną wycenę")
+- Nagłówek 8–9: wyróżniki vs konkurencja
+- Nagłówek 10: lokalizacja lub specjalizacja
+
+4 OPISY (każdy MAX 90 znaków ze spacjami):
+- Opis 1: problem klienta + rozwiązanie
+- Opis 2: dowód społeczny + korzyść
+- Opis 3: konkretna oferta + CTA
+- Opis 4: gwarancja lub eliminacja ryzyka
+
+Po każdym nagłówku podaj liczbę znaków w nawiasie.</pre>
+    </div>
+    <div class="sec">Twoja reklama RSA</div>
+    <div class="notes"><textarea data-notes placeholder="Nagłówki (10): …&#10;&#10;Opisy (4): …&#10;&#10;Wskaźnik jakości: dobra / doskonała" style="min-height:120px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+</div>
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
+  <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
+
+<!-- ══════ BLOK 4 — AUTOMATYZACJA ══════ -->
+<div class="panel" id="p4">
+
+    <div class="icard">
+      <strong>MailerLite — darmowy do 1000 subskrybentów</strong>
+      <p>Automation workflows, formularze embed, sekwencje — wszystko bezpłatne. Bez karty. Najszybszy start do email marketingu dla małych firm.</p>
+    </div>
+    <div class="icard">
+      <strong>Formularz embed na Lovable</strong>
+      <p>MailerLite → Forms → Embedded → skopiuj kod HTML → w Lovable: „Dodaj ten formularz w sekcji kontaktowej" → wklej kod. 3 minuty pracy.</p>
+    </div>
+    <div class="icard">
+      <strong>Test działania — zrób sam</strong>
+      <p>Po skonfigurowaniu: wypełnij własny formularz testowym mailem → sprawdź czy mail powitalny przyszedł w ciągu 2 minut. Jeśli tak — Twoja automatyzacja działa.</p>
+    </div>
+  </div>
+</div>
+
+<article class="cw" data-cw="4A">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4A</span><span class="cwmod">Automatyzacja · AI</span><span class="cwt">~15 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">3 maile follow-up — napisane przez AI</h2>
+  <p class="cwgoal"><b>Cel:</b> 3 gotowe maile do wklejenia w MailerLite — powitalny, z wartością, ze sprzedażowym CTA.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Wyślij Prompt 3 maili → uzupełnij danymi swojego biznesu → poczekaj na 3 gotowe maile.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź temat maila 1 — otwieralność zależy głównie od tematu (max 50 znaków, konkretny lub z pytaniem).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Sprawdź czy każdy mail ma jedno CTA — nie dwie linki, nie trzy przyciski.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Zapisz 3 maile w notatkach — kopiujesz je do MailerLite w ćwiczeniu 4B.</span></label>
+    <div class="sec">Prompt — 3 maile follow-up</div>
+    <div class="prom">
+      <div class="pbar"><span>Prompt — sekwencja 3 maili</span><button class="pcopy" data-copy>Kopiuj</button></div>
+      <pre>Jesteś copywriterem email marketingu. Mój biznes:
+<b>[UVP + PRODUKT + CENA + CO DOSTAJE OSOBA KTÓRA ZOSTAWIŁA KONTAKT]</b>
+
+Napisz sekwencję 3 maili follow-up:
+
+MAIL 1 — wysyłany natychmiast po zapisaniu:
+Temat (max 50 znaków): ciepły, konkretny
+Treść (100–150 słów): powitanie + dostarczenie tego co obiecałeś (wycena / PDF / dostęp) + jedno pytanie budujące relację
+
+MAIL 2 — po 2 dniach:
+Temat: z pytaniem lub intrygą
+Treść (120–180 słów): wartościowa treść (porada, case study, historia klienta) + miękkie CTA
+
+MAIL 3 — po 5 dniach:
+Temat: konkretna oferta
+Treść (120–150 słów): bezpośrednia propozycja + korzyść + deadline lub ograniczenie + jedno CTA
+
+Ton: ludzki, ciepły, bez korporacyjnych zwrotów. Pisz w 1. osobie.</pre>
+    </div>
+    <div class="sec">Twoje 3 maile</div>
+    <div class="notes"><textarea data-notes placeholder="Mail 1: temat — …  treść — …&#10;&#10;Mail 2: temat — …  treść — …&#10;&#10;Mail 3: temat — …  treść — …" style="min-height:150px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="4B">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4B</span><span class="cwmod">MailerLite · formularz</span><span class="cwt">~15 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Formularz MailerLite osadzony na stronie Lovable</h2>
+  <p class="cwgoal"><b>Cel:</b> formularz MailerLite działa na Twojej Lovable stronie — wypełnienie = automatyczny zapis do listy.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>Zarejestruj się na <a href="https://mailerlite.com" target="_blank">mailerlite.com</a> (bezpłatnie, bez karty).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>MailerLite → <b>Forms</b> → <b>Embedded forms</b> → <b>Create form</b> → dodaj pola: Imię + Email → zapisz.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Kliknij <b>Get code</b> → skopiuj HTML embed kod.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>W Lovable wpisz: „Dodaj ten formularz HTML w sekcji kontaktowej zamiast obecnego formularza: [wklej kod]" → zatwierdź.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Odśwież stronę Lovable → sprawdź czy formularz widoczny → wypełnij testowo własnym emailem.</span></label>
+    <div class="sec">Notatki</div>
+    <div class="notes"><textarea data-notes placeholder="Email testowy: …  Czy formularz widoczny: tak/nie  Problemy: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<article class="cw" data-cw="4C">
+  <div class="cwh">
+    <div class="cwm"><span class="cwn">Ćwiczenie 4C</span><span class="cwmod">MailerLite · Automation</span><span class="cwt">~15 min</span></div>
+    <span class="cwbadge">✓ Ukończone</span>
+  </div>
+  <h2 class="cwtitle">Automation — trigger → 3 maile → działa 24/7</h2>
+  <p class="cwgoal"><b>Cel:</b> działająca sekwencja w MailerLite — formularz wypełniony = mail 1 natychmiast, mail 2 po 2 dniach, mail 3 po 5 dniach.</p>
+  <div class="cwbody">
+    <div class="sec">Kroki</div>
+    <label class="step"><input type="checkbox" data-step><span>MailerLite → <b>Automations</b> → <b>Create automation</b> → trigger: <b>When subscriber joins a group</b> → wybierz grupę z formularza.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Dodaj krok: <b>Send email</b> → wklej treść Maila 1 z ćwiczenia 4A (temat + treść).</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Dodaj krok: <b>Wait</b> → 2 dni → <b>Send email</b> → Mail 2.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Dodaj krok: <b>Wait</b> → 3 dni → <b>Send email</b> → Mail 3.</span></label>
+    <label class="step"><input type="checkbox" data-step><span>Kliknij <b>Activate</b> → wróć na stronę Lovable → wypełnij formularz własnym emailem testowym → sprawdź czy mail 1 przyszedł w ciągu 2 minut. 🎉</span></label>
+    <div class="sec">Notatki — wynik testu</div>
+    <div class="notes"><textarea data-notes placeholder="Trigger: …  Mail 1 przyszedł: tak/nie  Po ilu minutach: …  Automation status: aktywna / nieaktywna"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
+  </div>
+</article>
+
+<!-- TOOLS -->
+<section style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:20px">
+  <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:17px;color:var(--ink);margin-bottom:12px">🔗 Wszystkie narzędzia dnia</h2>
+  <div class="tgrid">
+    <a class="tool" href="https://lovable.dev" target="_blank"><b>Lovable</b><span class="tu">lovable.dev</span><p>Strona z jednego opisu — bez kodu</p></a>
+    <a class="tool" href="https://github.com" target="_blank"><b>GitHub</b><span class="tu">github.com</span><p>Darmowy hosting i wersjonowanie</p></a>
+    <a class="tool" href="https://21st.dev" target="_blank"><b>21st.dev</b><span class="tu">21st.dev</span><p>Inspiracje UI — komponenty i layouty</p></a>
+    <a class="tool" href="https://business.facebook.com/adsmanager" target="_blank"><b>Meta Ads Manager</b><span class="tu">business.facebook.com</span><p>Kampanie Facebook i Instagram</p></a>
+    <a class="tool" href="https://ads.google.com" target="_blank"><b>Google Ads</b><span class="tu">ads.google.com</span><p>Kampanie Search + Keyword Planner</p></a>
+    <a class="tool" href="https://mailerlite.com" target="_blank"><b>MailerLite</b><span class="tu">mailerlite.com</span><p>Email automation — bezpłatny do 1000</p></a>
+    <a class="tool" href="https://claude.ai" target="_blank"><b>Claude</b><span class="tu">claude.ai</span><p>Treści LP, maile, teksty reklamowe</p></a>
+    <a class="tool" href="https://chatgpt.com" target="_blank"><b>ChatGPT</b><span class="tu">chatgpt.com</span><p>Słowa kluczowe, RSA, teksty Meta</p></a>
+  </div>
+</section>
+<div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
+  <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
+  <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
+  <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
+  <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
+
+</div>
+
+<div class="actions">
+  <button class="btn bp" id="dlBtn">⬇️ Pobierz moje notatki (.txt)</button>
+  <button class="btn bg" id="rstBtn">Wyczyść postęp</button>
+</div>
+</main>
+
+<footer>
+  <div class="fi">
+    <span><b>Energia dla Biznesu</b> · Nowoczesny Marketing z AI</span>
+    <span>Prowadzący: <b>Matsvei Dzmitryieu</b> · <span class="o">⚡</span> 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var PFX="edb-nd3-";
+var mem={};
+var S={
+  get:function(k){try{return localStorage.getItem(k)}catch(e){return mem[k]||null}},
+  set:function(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}},
+  del:function(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}
+};
+
+/* GLOSSARY */
+var gBtn=document.getElementById("gBtn");
+var gPanel=document.getElementById("gPanel");
+var gClose=document.getElementById("gClose");
+function openG(){gPanel.classList.add("open");gBtn.style.display="none"}
+function closeG(){gPanel.classList.remove("open");gBtn.style.display="flex"}
+gBtn.addEventListener("click",openG);
+gClose.addEventListener("click",closeG);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeG()});
+
+/* GLOSSARY TABS */
+Array.prototype.slice.call(document.querySelectorAll(".gTabBtn")).forEach(function(btn){
+  btn.addEventListener("click",function(){
+    Array.prototype.slice.call(document.querySelectorAll(".gTabBtn")).forEach(function(b){b.classList.remove("on")});
+    Array.prototype.slice.call(document.querySelectorAll(".gContent")).forEach(function(c){c.classList.remove("on")});
+    btn.classList.add("on");
+    document.getElementById("gc-"+btn.dataset.gtab).classList.add("on");
+  });
+});
+
+/* GLOSSARY SEARCH */
+var gSrch=document.getElementById("gSearch");
+var gNoRes=document.getElementById("gNoRes");
+var gQEl=document.getElementById("gQ");
+if(gSrch){
+  gSrch.addEventListener("input",function(){
+    var q=this.value.toLowerCase().trim();
+    var items=Array.prototype.slice.call(document.querySelectorAll(".gItem"));
+    var anyVis=false;
+    items.forEach(function(item){var m=!q||item.textContent.toLowerCase().indexOf(q)!==-1;item.style.display=m?"":"none";if(m)anyVis=true});
+    Array.prototype.slice.call(document.querySelectorAll(".gSec")).forEach(function(sec){
+      if(!q){sec.style.display="";return}
+      var el=sec.nextElementSibling;var vis=false;
+      while(el&&!el.classList.contains("gSec")){if(el.style.display!=="none")vis=true;el=el.nextElementSibling}
+      sec.style.display=vis?"":"none";
+    });
+    if(gNoRes&&gQEl){gQEl.textContent=q;gNoRes.style.display=(!anyVis&&q)?"block":"none"}
+  });
+}
+
+/* SZYBKI TEST */
+var QUIZ=[
+  {q:"Co oznacza skrót UVP?",opts:["Unikalna Propozycja Wartości — to co wyróżnia markę na tle konkurencji","Ustandaryzowany Plan Viralu — strategia treści wirusowych","Unijny Program Wartości — dofinansowanie marketingu","Użytkownik Platformy Właściwej — termin z Meta Ads"],c:0},
+  {q:"Trzy kluczowe pytania przy budowie marki osobistej:",opts:["Kim jesteś / Komu pomagasz / Jaki problem rozwiązujesz","Skąd jesteś / Ile zarabiasz / Co lubisz robić","Jaka jest cena / Czy masz certyfikat / Jak długo działasz","Ile masz followersów / Kiedy piszesz posty / Na jakich platformach"],c:0},
+  {q:"Który element NIE wchodzi w strukturę promptu (RZKF)?",opts:["Cena planu AI (czy masz wersję płatną)","Rola — kim ma być AI","Kontekst — opis biznesu i odbiorcy","Format — jak ma wyglądać odpowiedź"],c:0},
+  {q:"Prompt engineering w marketingu oznacza:",opts:["Tworzenie precyzyjnych poleceń dla AI, aby uzyskać lepsze treści","Programowanie wtyczek do systemu CMS","Optymalizację kodu strony pod kątem szybkości","Konfigurację piksela śledzącego w Meta Business"],c:0},
+  {q:"Do czego służy VEED.IO?",opts:["Edycji wideo online — napisy automatyczne, cięcie, formaty Reels/TikTok","Generowania grafik wektorowych do druku","Tworzenia stron internetowych metodą drag & drop","Zarządzania kampaniami reklamowymi"],c:0},
+  {q:"Zasada '3 sekund' w marketingu wideo:",opts:["Pierwsze 3 sek decydują czy widz zostaje — hook musi zatrzymać od razu","Film wideo nie powinien być dłuższy niż 3 sekundy","Najlepiej publikować 3 filmiki tygodniowo","AI potrzebuje 3 sek żeby wygenerować napisy"],c:0},
+  {q:"Funkcja Magic Design w Canvie:",opts:["Automatycznie generuje gotowe układy graficzne na podstawie opisu","Animuje filmy w formacie 3D","Zarządza budżetem kampanii reklamowej","Transkrybuje rozmowy i spotkania online"],c:0},
+  {q:"Wymiary post pionowy Instagram (format 4:5):",opts:["1080 × 1350 px","1200 × 630 px","1080 × 1080 px","1920 × 1080 px"],c:0},
+  {q:"Hierarchia poziomów w Meta Ads (od najwyższego):",opts:["Kampania → Zestaw reklam → Reklama","Reklama → Kampania → Zestaw reklam","Zestaw reklam → Reklama → Kampania","Kampania → Reklama → Zestaw reklam"],c:0},
+  {q:"Co oznacza wskaźnik CPL?",opts:["Cost Per Lead — koszt pozyskania jednego kontaktu (leada)","Content Per Link — liczba linków w reklamie","Click Per Landing — kliknięcia na landing page","Cost Per Like — koszt jednego polubienia posta"],c:0},
+  {q:"Kiedy wybrać Google Ads zamiast Meta Ads?",opts:["Gdy klient aktywnie szuka rozwiązania w wyszukiwarce","Gdy chcemy budować zasięg wśród osób nieznających marki","Gdy targetujemy według zainteresowań na Facebooku","Gdy prowadzimy remarketing wideo mobilny"],c:0},
+  {q:"Skuteczny landing page powinien zawierać:",opts:["Jeden jasny cel i jedno wyraźne wezwanie do działania (CTA)","Rozbudowane menu z linkami do wszystkich stron","Jak najwięcej informacji o historii firmy","Kilka różnych formularzy do różnych celów"],c:0},
+  {q:"Make.com to narzędzie do:",opts:["Automatyzacji procesów no-code — łączenia aplikacji w scenariusze","Edycji i montażu wideo online","Tworzenia grafik i materiałów promocyjnych","Zarządzania kampaniami Google Ads"],c:0},
+  {q:"Co to jest ROAS?",opts:["Return on Ad Spend — przychód ÷ wydatki (ROAS 4 = 4 zł z każdej 1 zł)","Rate of Audience Segments — wskaźnik podziału grup odbiorców","Reach of Ad System — zasięg systemu reklamowego Meta","Return of Average Sales — średni zwrot ze sprzedaży organicznej"],c:0}
+];
+var qState={};
+function renderQuiz(){
+  var box=document.getElementById("quizContainer");
+  if(!box)return;
+  var html="";
+  QUIZ.forEach(function(q,qi){
+    html+='<div class="qItem" data-qi="'+qi+'">';
+    html+='<div class="qNum">Pytanie '+(qi+1)+' / '+QUIZ.length+'</div>';
+    html+='<div class="qText">'+q.q+'</div>';
+    html+='<div class="qOpts">';
+    q.opts.forEach(function(opt,oi){
+      html+='<button class="qOpt" data-qi="'+qi+'" data-oi="'+oi+'">'+opt+'</button>';
+    });
+    html+='</div></div>';
+  });
+  box.innerHTML=html;
+  Array.prototype.slice.call(box.querySelectorAll(".qOpt")).forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var qi=parseInt(btn.dataset.qi);
+      var oi=parseInt(btn.dataset.oi);
+      if(qState[qi]!==undefined)return;
+      qState[qi]=oi;
+      var allOpts=box.querySelectorAll('[data-qi="'+qi+'"].qOpt');
+      Array.prototype.slice.call(allOpts).forEach(function(b,i){
+        b.classList.add("disabled");
+        if(i===QUIZ[qi].c)b.classList.add("correct");
+        else if(i===oi&&oi!==QUIZ[qi].c)b.classList.add("wrong");
+      });
+      updateQScore();
+    });
+  });
+}
+function updateQScore(){
+  var answered=Object.keys(qState).length;
+  var correct=0;
+  Object.keys(qState).forEach(function(qi){if(qState[parseInt(qi)]===QUIZ[parseInt(qi)].c)correct++});
+  var el=document.getElementById("qScore");
+  if(el){
+    el.textContent="Wynik: "+correct+" / "+answered+" poprawnych";
+    el.classList.toggle("show",answered>0);
+    el.style.background=answered===QUIZ.length?(correct>=11?"#e9f1ec":"#fde8e8"):undefined;
+    el.style.color=answered===QUIZ.length?(correct>=11?"var(--done)":"#b3361c"):undefined;
+  }
+}
+document.getElementById("qReset").addEventListener("click",function(){
+  qState={};renderQuiz();updateQScore();
+});
+renderQuiz();
+
+/* MODULE TABS */
+var tabs=Array.prototype.slice.call(document.querySelectorAll(".tab"));
+tabs.forEach(function(tab){
+  tab.addEventListener("click",function(){
+    tabs.forEach(function(t){t.classList.remove("on")});
+    document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on")});
+    tab.classList.add("on");
+    document.getElementById(tab.dataset.panel).classList.add("on");
+    if(tab.closest(".tabs-bottom")){window.scrollTo({top:0,behavior:"smooth"});}
+  });
+});
+
+/* PROGRESS */
+var steps=Array.prototype.slice.call(document.querySelectorAll("[data-step]"));
+document.getElementById("tc").textContent=steps.length;
+function refresh(){
+  var done=steps.filter(function(s){return s.checked}).length;
+  var pct=steps.length?Math.round(done/steps.length*100):0;
+  document.getElementById("dc").textContent=done;
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("bf").style.width=pct+"%";
+  document.querySelectorAll(".cw[data-cw]").forEach(function(cw){
+    var ss=cw.querySelectorAll("[data-step]"),all=ss.length>0;
+    ss.forEach(function(x){if(!x.checked)all=false});
+    cw.classList.toggle("done",all);
+  });
+}
+steps.forEach(function(s,i){
+  if(S.get(PFX+"s"+i)==="1")s.checked=true;
+  s.addEventListener("change",function(){S.set(PFX+"s"+i,s.checked?"1":"0");refresh()});
+});
+
+/* NOTES */
+var notes=Array.prototype.slice.call(document.querySelectorAll("[data-notes]"));
+notes.forEach(function(n,i){
+  var sv=S.get(PFX+"n"+i);if(sv)n.value=sv;
+  var badge=n.parentElement.querySelector(".sv");var t=null;
+  n.addEventListener("input",function(){
+    S.set(PFX+"n"+i,n.value);
+    if(badge){badge.classList.add("s");clearTimeout(t);t=setTimeout(function(){badge.classList.remove("s")},1200)}
+  });
+});
+
+/* COPY PROMPTS */
+document.querySelectorAll("[data-copy]").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var txt=btn.closest(".prom").querySelector("pre").textContent.trim();
+    function ok(){var o=btn.textContent;btn.textContent="✓ Skopiowano";btn.classList.add("cp");setTimeout(function(){btn.textContent=o;btn.classList.remove("cp")},1600)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,lg)}else{lg()}
+    function lg(){var ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok()}catch(e){}document.body.removeChild(ta)}
+  });
+});
+
+/* DOWNLOAD */
+var nt=["Treści LP (H1, podtytuł, problem, CTA, FAQ)","Strona Lovable — URL i poprawki","GitHub — link do repo","Meta Ads — 3 warianty tekstów reklamowych","Meta Ads — szkic kampanii","Google Ads — 20 słów kluczowych","Google Ads — reklama RSA","3 maile follow-up (sekwencja)","Formularz MailerLite — wynik testu","Automation — wynik działania"];
+document.getElementById("dlBtn").addEventListener("click",function(){
+  var out="NOWOCZESNY MARKETING Z AI — notatki\nEnergia dla Biznesu · "+new Date().toLocaleDateString("pl-PL")+"\n\n";
+  notes.forEach(function(n,i){out+="=== "+(nt[i]||"Notatki "+(i+1))+" ===\n"+(n.value.trim()||"(pusto)")+"\n\n"});
+  var blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="notatki-marketing-ai-niedziela.txt";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
+});
+
+/* RESET */
+document.getElementById("rstBtn").addEventListener("click",function(){
+  if(!confirm("Wyczyścić wszystkie kroki i notatki?"))return;
+  steps.forEach(function(s,i){s.checked=false;S.del(PFX+"s"+i)});
+  notes.forEach(function(n,i){n.value="";S.del(PFX+"n"+i)});
+  refresh();
+});
+
+refresh();
+})();
+</script>
+</body>
+</html>
