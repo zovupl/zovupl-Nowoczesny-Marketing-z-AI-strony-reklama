@@ -323,24 +323,6 @@ footer{background:var(--ink);color:#9aa39a;margin-top:30px;padding:20px 24px;fon
 <!-- ══════ BLOK 1 — LANDING PAGE ══════ -->
 <div class="panel on" id="p1">
 
-    <div class="icard">
-      <strong>land-book.com — inspiracje LP</strong>
-      <p>Galeria najlepszych landing page'y. Zanim napiszesz prompt — znajdź styl który Ci pasuje.</p>
-      <a href="https://land-book.com" target="_blank">🔗 land-book.com →</a>
-    </div>
-    <div class="icard">
-      <strong>Lovable — AI buduje stronę</strong>
-      <p>Opisujesz po polsku → AI generuje kod React → strona online w 2 minuty. Bez programowania.</p>
-      <a href="https://lovable.dev" target="_blank">🔗 lovable.dev →</a>
-    </div>
-    <div class="icard">
-      <strong>Fightmode.tv — live production case</strong>
-      <p>Prawdziwy serwis zbudowany w Lovable + Claude Code + GitHub. Trener pokaże live jak to działa.</p>
-      <a href="https://fightmode.tv" target="_blank">🔗 fightmode.tv →</a>
-    </div>
-  </div>
-</div>
-
 <article class="cw" data-cw="1A">
   <div class="cwh">
     <div class="cwm"><span class="cwn">Ćwiczenie 1A</span><span class="cwmod">Landing Page</span><span class="cwt">~15 min</span></div>
@@ -441,21 +423,6 @@ Wymagania:
 <!-- ══════ BLOK 2 — META ADS ══════ -->
 <div class="panel" id="p2">
 
-    <div class="icard">
-      <strong>Lookalike Audience w praktyce</strong>
-      <p>Wgraj listę 100 emaili klientów → Meta znajdzie 2 000 000 podobnych osób w Polsce. Najskuteczniejsze targetowanie dla małych firm.</p>
-    </div>
-    <div class="icard">
-      <strong>Kreacja vs tekst — co ważniejsze?</strong>
-      <p>Kreacja (obraz/wideo) zatrzymuje scrollowanie. Tekst przekonuje. Bez dobrej kreacji najlepszy tekst nie zadziała. Używaj wczorajszych grafik.</p>
-    </div>
-    <div class="icard">
-      <strong>Cel kampanii — Leady</strong>
-      <p>Dla małych firm: cel „Leady" z formularzem natywnym (Instant Form) jest lepszy niż odsyłanie na stronę. Osoba nie opuszcza Facebooka — konwersja wyższa.</p>
-    </div>
-  </div>
-</div>
-
 <article class="cw" data-cw="2A">
   <div class="cwh">
     <div class="cwm"><span class="cwn">Ćwiczenie 2A</span><span class="cwmod">Meta Ads · AI</span><span class="cwt">~15 min</span></div>
@@ -524,21 +491,6 @@ Do każdego: sugestia kreacji (jaki obraz/wideo pasuje do tego wariantu).</pre>
 
 <!-- ══════ BLOK 3 — GOOGLE ADS ══════ -->
 <div class="panel" id="p3">
-
-    <div class="icard">
-      <strong>RSA — jak Google testuje reklamy</strong>
-      <p>Dajesz 10 nagłówków i 4 opisy → Google automatycznie testuje kombinacje → najlepsze zestawy dostają więcej wyświetleń. Twoja reklama optymalizuje się sama.</p>
-    </div>
-    <div class="icard">
-      <strong>Long tail — dlaczego warto</strong>
-      <p>„okna" = drogi CPC, ogólny ruch. „montaż okien aluminiowych Warszawa cena" = tańszy CPC, klient gotowy do zakupu. Zawsze mix ogólnych + long tail.</p>
-    </div>
-    <div class="icard">
-      <strong>Keyword Planner — free tool</strong>
-      <p>Google Keyword Planner w Google Ads — sprawdzasz miesięczny volumen i CPC dla każdej frazy. Bezpłatny, wymaga konta Google Ads (bez karty do przeglądania).</p>
-    </div>
-  </div>
-</div>
 
 <article class="cw" data-cw="3A">
   <div class="cwh">
@@ -629,21 +581,6 @@ Po każdym nagłówku podaj liczbę znaków w nawiasie.</pre>
 
 <!-- ══════ BLOK 4 — AUTOMATYZACJA ══════ -->
 <div class="panel" id="p4">
-
-    <div class="icard">
-      <strong>MailerLite — darmowy do 1000 subskrybentów</strong>
-      <p>Automation workflows, formularze embed, sekwencje — wszystko bezpłatne. Bez karty. Najszybszy start do email marketingu dla małych firm.</p>
-    </div>
-    <div class="icard">
-      <strong>Formularz embed na Lovable</strong>
-      <p>MailerLite → Forms → Embedded → skopiuj kod HTML → w Lovable: „Dodaj ten formularz w sekcji kontaktowej" → wklej kod. 3 minuty pracy.</p>
-    </div>
-    <div class="icard">
-      <strong>Test działania — zrób sam</strong>
-      <p>Po skonfigurowaniu: wypełnij własny formularz testowym mailem → sprawdź czy mail powitalny przyszedł w ciągu 2 minut. Jeśli tak — Twoja automatyzacja działa.</p>
-    </div>
-  </div>
-</div>
 
 <article class="cw" data-cw="4A">
   <div class="cwh">
@@ -881,10 +818,10 @@ var tabs=Array.prototype.slice.call(document.querySelectorAll(".tab"));
 tabs.forEach(function(tab){
   tab.addEventListener("click",function(){
     tabs.forEach(function(t){t.classList.remove("on")});
-    document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on")});
+    Array.prototype.slice.call(document.querySelectorAll(".panel")).forEach(function(p){p.classList.remove("on")});
     tab.classList.add("on");
     document.getElementById(tab.dataset.panel).classList.add("on");
-    if(tab.closest(".tabs-bottom")){window.scrollTo({top:0,behavior:"smooth"});}
+    window.scrollTo({top:0,behavior:"smooth"});
   });
 });
 
