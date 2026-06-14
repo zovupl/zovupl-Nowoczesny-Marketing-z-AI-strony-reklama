@@ -412,12 +412,12 @@ Wymagania:
     <div class="notes"><textarea data-notes placeholder="Link GitHub repo: …  Status połączenia: ✓ / ✗  Pytania: …"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
   </div>
 </article>
-</div>
 <div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
   <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
 </div>
 
 <!-- ══════ BLOK 2 — META ADS ══════ -->
@@ -481,12 +481,12 @@ Do każdego: sugestia kreacji (jaki obraz/wideo pasuje do tego wariantu).</pre>
     <div class="notes"><textarea data-notes placeholder="Cel kampanii: Leady  Zestaw 1: zainteresowania — …  Zestaw 2: …  Kreacja: …  Czy zapisano draft: tak/nie"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
   </div>
 </article>
-</div>
 <div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
   <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
 </div>
 
 <!-- ══════ BLOK 3 — GOOGLE ADS ══════ -->
@@ -571,12 +571,12 @@ Po każdym nagłówku podaj liczbę znaków w nawiasie.</pre>
     <div class="notes"><textarea data-notes placeholder="Nagłówki (10): …&#10;&#10;Opisy (4): …&#10;&#10;Wskaźnik jakości: dobra / doskonała" style="min-height:120px"></textarea><div class="nh">Zapisuje się automatycznie. <span class="sv">✓ zapisano</span></div></div>
   </div>
 </article>
-</div>
 <div class="tabs tabs-bottom" role="tablist" style="margin-top:8px">
   <button class="tab" data-panel="p1"><span class="tn">Blok 1</span><span class="tk">Landing Page</span><span class="th">Lovable · GitHub</span></button>
   <button class="tab" data-panel="p2"><span class="tn">Blok 2</span><span class="tk">Meta Ads</span><span class="th">Facebook · Instagram</span></button>
   <button class="tab" data-panel="p3"><span class="tn">Blok 3</span><span class="tk">Google Ads</span><span class="th">Search · Słowa kluczowe</span></button>
   <button class="tab" data-panel="p4"><span class="tn">Blok 4</span><span class="tk">Automatyzacja</span><span class="th">MailerLite · Follow-up</span></button>
+</div>
 </div>
 
 <!-- ══════ BLOK 4 — AUTOMATYZACJA ══════ -->
@@ -821,7 +821,7 @@ tabs.forEach(function(tab){
     Array.prototype.slice.call(document.querySelectorAll(".panel")).forEach(function(p){p.classList.remove("on")});
     tab.classList.add("on");
     document.getElementById(tab.dataset.panel).classList.add("on");
-    window.scrollTo({top:0,behavior:"smooth"});
+    if(tab.closest(".tabs-bottom")){window.scrollTo({top:0,behavior:"smooth"});}
   });
 });
 
